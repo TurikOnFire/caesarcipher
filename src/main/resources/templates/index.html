@@ -1,28 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>File Manager</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caesar Cipher</title>
 </head>
 <body>
-<h2>Загрузка и шифрование</h2>
-<form method="post" action="/file/upload" enctype="multipart/form-data">
-    <input type="file" name="file"/>
-    <button type="submit">Загрузить в программу и зашифровать</button>
+<h1>Caesar Cipher</h1>
+<form action="/encrypt" method="post">
+  <label for="text">Text:</label>
+  <input type="text" id="text" name="text" required>
+  <label for="shift">Shift:</label>
+  <input type="number" id="shift" name="shift" required>
+  <label for="language">Language:</label>
+  <select id="language" name="language" required>
+    <option value="en">English</option>
+    <option value="ru">Russian</option>
+  </select>
+  <button type="submit">Encrypt</button>
+</form>
+<form action="/decrypt" method="post">
+  <label for="text">Text:</label>
+  <input type="text" id="text" name="text" required>
+  <label for="shift">Shift:</label>
+  <input type="number" id="shift" name="shift" required>
+  <label for="language">Language:</label>
+  <select id="language" name="language" required>
+    <option value="en">English</option>
+    <option value="ru">Russian</option>
+  </select>
+  <button type="submit">Decrypt</button>
 </form>
 
-<h2>Скачать файл</h2>
-<form method="get" id="downloadForm">
-    <input type="text" id="filename" placeholder="Enter filename" required/>
-    <button type="button" onclick="downloadFile()">Скачать себе зашифрованный файл</button>
+<h2>Upload File</h2>
+<form action="/upload" method="post" enctype="multipart/form-data">
+  <label for="file">File:</label>
+  <input type="file" id="file" name="file" required>
+  <label for="shift">Shift:</label>
+  <input type="number" id="shift" name="shift" required>
+  <label for="language">Language:</label>
+  <select id="language" name="language" required>
+    <option value="en">English</option>
+    <option value="ru">Russian</option>
+  </select>
+  <button type="submit">Upload and Encrypt</button>
 </form>
 
-<script>
-    function downloadFile() {
-        const filename = document.getElementById("filename").value;
-        window.location.href = '/file/download/' + filename;
-    }
-</script>
+<h2>Frequency Analysis</h2>
+<form action="/frequency-analysis" method="post">
+  <label for="text">Encrypted Text:</label>
+  <textarea id="text" name="text" required></textarea>
+  <label for="language">Language:</label>
+  <select id="language" name="language" required>
+    <option value="en">English</option>
+    <option value="ru">Russian</option>
+  </select>
+  <button type="submit">Decrypt with Frequency Analysis</button>
+</form>
+
+<h2>Download Files</h2>
+<ul>
+  <li th:each="file : ${files}">
+    <a th:href="@{/download(fileName=${file})}" th:text="${file}"></a>
+  </li>
+</ul>
+
+<p th:if="${message}" th:text="${message}"></p>
 </body>
 </html>
